@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad6486f21fe6cf44e8c9b843477160a1, type: 3}
   m_Name: Apel
   m_EditorClassIdentifier: 
-  hungerRestore: 0
-  itemName: 
+  hungerRestore: 25
+  itemName: Apel
   icon: {fileID: 0}

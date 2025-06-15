@@ -1,4 +1,4 @@
-using UnityEngine;
+    using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public float jumpHeight = 2f;
 
     public Transform cameraTransform;
-
+    
     private CharacterController controller;
     private Vector3 velocity;
     private bool isGrounded;
@@ -47,8 +47,11 @@ public class PlayerMovement : MonoBehaviour
 
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+
+        // Rotasi vertikal pada CameraHolder (bukan player atau Main Camera langsung)
         cameraTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
 
+        // Rotasi horizontal pada Player (memutar badan)
         transform.Rotate(Vector3.up * mouseX);
 
         // Ground Check
