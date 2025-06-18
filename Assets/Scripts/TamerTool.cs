@@ -2,8 +2,12 @@ using UnityEngine;
 
 public class TamerTool : MonoBehaviour
 {
-    public float tameRange = 5f;
+    public float tameRange = 10f; // Naikkan sedikit untuk tes
     public KeyCode tameKey = KeyCode.T;
+    
+    // Variabel ini SANGAT PENTING
+    public Camera playerCamera; 
+    public LayerMask tameableLayers;
 
     void Update()
     {
@@ -15,18 +19,26 @@ public class TamerTool : MonoBehaviour
 
     void TryTameCreature()
     {
-        Ray ray = new Ray(transform.position, transform.forward);
-        if (Physics.Raycast(ray, out RaycastHit hit, tameRange))
+        // --- INI BAGIAN PALING PENTING YANG MEMPERBAIKI MASALAH ANDA ---
+        // Kita tidak lagi menggunakan transform.forward, tapi menembak dari tengah layar.
+        Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f));
+        
+        // Gunakan Debug.DrawRay untuk melihat sinarnya di Scene View saat testing
+        Debug.DrawRay(ray.origin, ray.direction * tameRange, Color.cyan, 2f);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, tameRange, tameableLayers))
         {
+            // Cek apakah yang kena adalah objek dengan script Tameable
             Tameable tameable = hit.collider.GetComponent<Tameable>();
             if (tameable != null)
             {
-                tameable.TryToTame();
+                // Panggil fungsi taming
+                tameable.TryToTame(this.transform);
             }
-            else
-            {
-                Debug.Log("Tidak ada makhluk yang bisa dijinakkan di depan.");
-            }
+        }
+        else
+        {
+            // Debug.Log("Tidak ada target di depan."); // Bisa di-uncomment untuk tes
         }
     }
 }
